@@ -7,15 +7,12 @@ import unicodedata
 #Fazendo uma lista com as palavras de 5 letras.
 with open('palavras.txt', 'r') as arquivo:
     lista_palavras = [palavra.strip() for palavra in arquivo if len(palavra.strip()) == 5]
-#Tirando o acento das palavras
-lista_sem_acento = []
-for palavras in lista_palavras:
-    palavra_nova = normaliza_palavra(palavras)
-    lista_sem_acento.append(palavra_nova)
+#Tirando o acento das palavras e colocando em uma lista
+lista_palavra_formatada = lista_sem_acento(lista_palavras)
 #Variáveis
 tentativas = 0
 #Sorteando Palavra
-palavra_sorteada = choice(lista_sem_acento)
+palavra_sorteada = choice(lista_palavra_formatada)
 
 
 
@@ -27,7 +24,7 @@ while True:
         pergunta_palavra = input('Digite sua chute: ')
         if verfica_palavra(pergunta_palavra) == 'Entrada Inválida':
             print(Fore.RED + 'Digite Novamente, entrada inválida' + Fore.WHITE)
-        elif pergunta_palavra not in lista_sem_acento:
+        elif pergunta_palavra not in lista_palavra_formatada:
             print(Fore.RED + 'Digite Novamente, entrada inválida' + Fore.WHITE)
         else:
             break

@@ -136,3 +136,11 @@ def verfica_palavra(palavra):
         if letra not in "abcdefghijklmnopqrstuvwxyz" or len(palavra.strip()) != 5:
             return 'Entrada Inválida'
     return palavra.strip()
+
+#Função que tira o acento da palavra e coloca em uma lista nova
+def lista_sem_acento(lista_palavras):
+    lista_sem_acento = []
+    for palavras in lista_palavras:
+        palavra_nova = normaliza_palavra(palavras)
+        lista_sem_acento.append(palavra_nova)
+    return lista_sem_acento

@@ -14,14 +14,12 @@ tentativas = 0
 #Sorteando Palavra
 palavra_sorteada = choice(lista_palavra_formatada)
 
-
-
-
+#Início do jogo
 while True:
     #Verificando se a entrada é valida
     while True:
         print(palavra_sorteada)
-        pergunta_palavra = input('Digite sua chute: ')
+        pergunta_palavra = remove_acentos(input('Digite sua chute: ').lower().strip())
         if verfica_palavra(pergunta_palavra) == 'Entrada Inválida':
             print(Fore.RED + 'Digite Novamente, entrada inválida' + Fore.WHITE)
         elif pergunta_palavra not in lista_palavra_formatada:
@@ -30,10 +28,16 @@ while True:
             break
     tentativas+=1
     if pergunta_palavra == palavra_sorteada:
+        if tentativas == 1:
+            tabela_palavras = tabela_inicial(palavra_sorteada,pergunta_palavra)
+            print(tabela_palavras)
+        else:
+            tabela_palavras = tabela_jogo(tabela_palavras,palavra_sorteada,pergunta_palavra)
+            print(tabela_palavras)   
         pergunta_ganhador = input(Fore.GREEN + f'Parabéns, você acertou em {tentativas} tentativa(s). Deseja tentar adivinhar outra palavra? [S]/[N]. ' + Fore.WHITE).upper().strip()
         if pergunta_ganhador == 'S':
             tentativas = 0
-            palavra_sorteada = choice(lista_palavras)
+            palavra_sorteada = choice(lista_palavra_formatada)
         else:
             break
     else:
@@ -47,7 +51,7 @@ while True:
         pergunta_reiniciar = input(Fore.RED + f'Você Perdeu, a palavra era "{palavra_sorteada}". Deseja tentar adivinhar outra palavra? [S]/[N]. ' + Fore.WHITE).upper().strip()
         if pergunta_reiniciar == 'S':
             tentativas = 0
-            palavra_sorteada = choice(lista_palavras)
+            palavra_sorteada = choice(lista_palavra_formatada)
         else:
             break
     

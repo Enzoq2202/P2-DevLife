@@ -1,6 +1,17 @@
 from colorama import Fore
 from prettytable import PrettyTable
 import unicodedata
+import sys
+import time
+
+
+#Função para printar devagar 
+def print_slow(str):
+    for letter in str:
+        sys.stdout.write(letter)
+        sys.stdout.flush()
+        time.sleep(0.02)
+
 
 #Criando a tabela inicial do jogo
 def tabela_inicial(palavra_sorteada,palavra_chute):
@@ -109,7 +120,7 @@ def tabela_inicial(palavra_sorteada,palavra_chute):
     
     tabela_jogo.add_row([letra1,letra2,letra3,letra4,letra5])
     return tabela_jogo
-print(tabela_inicial('arara','marca'))
+
 #Criando a tabela que será atualizada com as novas palavras
 def tabela_jogo(tabela,palavra_sorteada,palavra_chute):
     contador1 = 0
@@ -125,6 +136,9 @@ def tabela_jogo(tabela,palavra_sorteada,palavra_chute):
         elif palavra_chute[0] not in palavra_sorteada:
             letra1 = Fore.MAGENTA + palavra_chute[0] + Fore.WHITE
         elif contador1 == 0 and palavra_chute.count(palavra_chute[0]) > 1 and palavra_chute[0] in palavra_sorteada and palavra_chute[0] != palavra_sorteada[0]:
+            letra1 = Fore.YELLOW + palavra_chute[0] + Fore.WHITE
+            contador1 = 1
+        elif contador1 == 1 and palavra_sorteada.count(palavra_chute[0]) > palavra_chute.count(palavra_chute[0]) and palavra_chute[0] in palavra_sorteada and palavra_chute[0] != palavra_sorteada[0]:
             letra1 = Fore.YELLOW + palavra_chute[0] + Fore.WHITE
             contador1 = 1
         else:
@@ -144,6 +158,9 @@ def tabela_jogo(tabela,palavra_sorteada,palavra_chute):
         elif contador1 == 0 and palavra_chute.count(palavra_chute[1]) > 1 and palavra_chute[1] in palavra_sorteada and palavra_chute[0] != palavra_sorteada[0]:
             letra2 = Fore.YELLOW + palavra_chute[1] + Fore.WHITE
             contador1 = 1
+        elif contador1 == 1 and palavra_sorteada.count(palavra_chute[1]) > palavra_chute.count(palavra_chute[1]) and palavra_chute[1] in palavra_sorteada and palavra_chute[0] != palavra_sorteada[0]:
+            letra2 = Fore.YELLOW + palavra_chute[1] + Fore.WHITE
+            contador1 = 1
         else:
             letra2 = Fore.MAGENTA + palavra_chute[1] + Fore.WHITE
     
@@ -159,6 +176,9 @@ def tabela_jogo(tabela,palavra_sorteada,palavra_chute):
         elif palavra_chute[2] not in palavra_sorteada:
             letra3 = Fore.MAGENTA + palavra_chute[2] + Fore.WHITE
         elif contador1 == 0 and palavra_chute.count(palavra_chute[2]) > 1 and palavra_chute[2] in palavra_sorteada and palavra_chute[0] != palavra_sorteada[0]:
+            letra3 = Fore.YELLOW + palavra_chute[2] + Fore.WHITE
+            contador1 = 1
+        elif contador1 == 1 and palavra_sorteada.count(palavra_chute[2]) > palavra_chute.count(palavra_chute[2]) and palavra_chute[2] in palavra_sorteada and palavra_chute[0] != palavra_sorteada[0]:
             letra3 = Fore.YELLOW + palavra_chute[2] + Fore.WHITE
             contador1 = 1
         else:
@@ -178,6 +198,9 @@ def tabela_jogo(tabela,palavra_sorteada,palavra_chute):
         elif contador1 == 0 and palavra_chute.count(palavra_chute[3]) > 1 and palavra_chute[3] in palavra_sorteada and palavra_chute[0] != palavra_sorteada[0]:
             letra4 = Fore.YELLOW + palavra_chute[3] + Fore.WHITE
             contador1 = 1
+        elif contador1 == 1 and palavra_sorteada.count(palavra_chute[3]) > palavra_chute.count(palavra_chute[3]) and palavra_chute[3] in palavra_sorteada and palavra_chute[0] != palavra_sorteada[0]:
+            letra4 = Fore.YELLOW + palavra_chute[3] + Fore.WHITE
+            contador1 = 1
         else:
             letra4 = Fore.MAGENTA + palavra_chute[3] + Fore.WHITE
     
@@ -195,8 +218,12 @@ def tabela_jogo(tabela,palavra_sorteada,palavra_chute):
         elif contador1 == 0 and palavra_chute.count(palavra_chute[4]) > 1 and palavra_chute[4] in palavra_sorteada and palavra_chute[0] != palavra_sorteada[0]:
             letra5 = Fore.YELLOW + palavra_chute[4] + Fore.WHITE
             contador1 = 1
+        elif contador1 == 1 and palavra_sorteada.count(palavra_chute[4]) > palavra_chute.count(palavra_chute[4]) and palavra_chute[4] in palavra_sorteada and palavra_chute[0] != palavra_sorteada[0]:
+            letra5 = Fore.YELLOW + palavra_chute[4] + Fore.WHITE
+            contador1 = 1
         else:
             letra5 = Fore.MAGENTA + palavra_chute[4] + Fore.WHITE
+    
     
     tabela.add_row([letra1,letra2,letra3,letra4,letra5])
     return tabela
@@ -229,3 +256,28 @@ def verfica_palavra(palavra):
         if letra not in "abcdefghijklmnopqrstuvwxyz" or len(palavra.strip()) != 5:
             return 'Entrada Inválida'
     return palavra.strip()
+
+#Função para atulizar o dicionário com as cores das letras
+def teclado(palavra_sorteada,palavra_chute,dicionario):
+    for i in range(5):
+        if palavra_chute[i] not in palavra_sorteada:
+            dicionario[palavra_chute[i]] = 'magenta'
+        elif palavra_chute[i] in palavra_sorteada and palavra_chute[i] == palavra_sorteada[i]:
+            dicionario[palavra_chute[i]] = 'verde'
+        else:
+            dicionario[palavra_chute[i]] = 'amarelo'
+    return dicionario
+
+#Função que vai pintar as letras do teclado
+def pinta_teclado(dicionario):
+    lista_teclado = []
+    for letras in dicionario:
+        if dicionario[letras] == 'verde':
+            lista_teclado.append(Fore.GREEN + letras)
+        elif dicionario[letras] == 'amarelo':
+            lista_teclado.append(Fore.YELLOW + letras)
+        elif dicionario[letras] == 'magenta':
+            lista_teclado.append(Fore.MAGENTA + letras)
+        else:
+            lista_teclado.append(Fore.BLACK + letras + Fore.WHITE)
+    return lista_teclado

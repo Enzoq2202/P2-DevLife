@@ -5,12 +5,40 @@ from prettytable import PrettyTable
 import unicodedata
 
 #Fazendo uma lista com as palavras de 5 letras.
-with open('palavras.txt', 'r') as arquivo:
+with open('palavras.txt', 'r', encoding="utf-8") as arquivo:
     lista_palavras = [palavra.strip() for palavra in arquivo if len(palavra.strip()) == 5]
 #Tirando o acento das palavras e colocando em uma lista
 lista_palavra_formatada = lista_sem_acento(lista_palavras)
 #Variáveis
 tentativas = 0
+dic_teclado = {
+    'a':'none',
+    'b':'none',
+    'c':'none',
+    'd':'none',
+    'e':'none',
+    'f':'none',
+    'g':'none',
+    'h':'none',
+    'i':'none',
+    'j':'none',
+    'k':'none',
+    'l':'none',
+    'm':'none',
+    'n':'none',
+    'o':'none',
+    'p':'none',
+    'q':'none',
+    'r':'none',
+    's':'none',
+    't':'none',
+    'u':'none',
+    'v':'none',
+    'w':'none',
+    'x':'none',
+    'y':'none',
+    'z':'none',
+}
 #Sorteando Palavra
 palavra_sorteada = choice(lista_palavra_formatada)
 
@@ -18,7 +46,6 @@ palavra_sorteada = choice(lista_palavra_formatada)
 while True:
     #Verificando se a entrada é valida
     while True:
-        print(palavra_sorteada)
         pergunta_palavra = remove_acentos(input('Digite sua chute: ').lower().strip())
         if verfica_palavra(pergunta_palavra) == 'Entrada Inválida':
             print(Fore.RED + 'Digite Novamente, entrada inválida' + Fore.WHITE)

@@ -1,16 +1,6 @@
 from colorama import Fore
 from prettytable import PrettyTable
 import unicodedata
-import sys
-import time
-
-
-#Função para printar devagar 
-def print_slow(str):
-    for letter in str:
-        sys.stdout.write(letter)
-        sys.stdout.flush()
-        time.sleep(0.02)
 
 
 #Criando a tabela inicial do jogo
@@ -29,6 +19,8 @@ def tabela_inicial(palavra_sorteada,palavra_chute):
             letra1 = Fore.YELLOW + palavra_chute[0] + Fore.WHITE
         elif palavra_chute[0] not in palavra_sorteada:
             letra1 = Fore.MAGENTA + palavra_chute[0] + Fore.WHITE
+        elif palavra_chute[0] != palavra_sorteada[0] and palavra_chute.count(palavra_chute[0]) > palavra_sorteada.count(palavra_chute[0]):
+            letra1 = Fore.MAGENTA + palavra_chute[0] + Fore.WHITE  
         elif contador1 == 0 and palavra_chute.count(palavra_chute[0]) > 1 and palavra_chute[0] in palavra_sorteada and palavra_chute[0] != palavra_sorteada[0]:
             letra1 = Fore.YELLOW + palavra_chute[0] + Fore.WHITE
             contador1 = 1
@@ -134,6 +126,8 @@ def tabela_jogo(tabela,palavra_sorteada,palavra_chute):
         if palavra_chute[0] in palavra_sorteada and palavra_chute.count(palavra_chute[0]) == palavra_sorteada.count(palavra_chute[0]):
             letra1 = Fore.YELLOW + palavra_chute[0] + Fore.WHITE
         elif palavra_chute[0] not in palavra_sorteada:
+            letra1 = Fore.MAGENTA + palavra_chute[0] + Fore.WHITE
+        elif palavra_chute[0] != palavra_sorteada[0] and palavra_chute.count(palavra_chute[0]) > palavra_sorteada.count(palavra_chute[0]):
             letra1 = Fore.MAGENTA + palavra_chute[0] + Fore.WHITE
         elif contador1 == 0 and palavra_chute.count(palavra_chute[0]) > 1 and palavra_chute[0] in palavra_sorteada and palavra_chute[0] != palavra_sorteada[0]:
             letra1 = Fore.YELLOW + palavra_chute[0] + Fore.WHITE
@@ -264,7 +258,7 @@ def teclado(palavra_sorteada,palavra_chute,dicionario):
             dicionario[palavra_chute[i]] = 'magenta'
         elif palavra_chute[i] in palavra_sorteada and palavra_chute[i] == palavra_sorteada[i]:
             dicionario[palavra_chute[i]] = 'verde'
-        else:
+        elif dicionario[palavra_chute[i]] != 'verde':
             dicionario[palavra_chute[i]] = 'amarelo'
     return dicionario
 
@@ -281,3 +275,19 @@ def pinta_teclado(dicionario):
         else:
             lista_teclado.append(Fore.BLACK + letras + Fore.WHITE)
     return lista_teclado
+
+#Função que vai colocar em um dicionário a quantidade de tentativas para fazer o resumo de rodadas
+def resumo_rodadas(dic_tentativas,tentativas,tipo_de_acerto):
+    for qntidade_tentativas,num_tentativas in dic_tentativas.items():
+        if qntidade_tentativas == tentativas:
+            dic_tentativas[qntidade_tentativas] += 1
+        elif qntidade_tentativas == tipo_de_acerto:
+            dic_tentativas[qntidade_tentativas] += 1
+
+    return dic_tentativas
+
+def porcentagem_final(dic_tentativas,contador_rodadas):
+    dic_retorno = {}
+    for tentativa in dic_tentativas:
+        dic_retorno[f'Tentativa {tentativa}: '] = (dic_tentativas[tentativa]/contador_rodadas) * 100
+    return dic_retorno

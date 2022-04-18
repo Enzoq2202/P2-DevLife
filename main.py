@@ -3,6 +3,7 @@ from random import *
 from colorama import Fore,Style
 from prettytable import PrettyTable
 import unicodedata
+import sys
 
 #Fazendo uma lista com as palavras de 5 letras.
 with open('palavras.txt', 'r', encoding="utf-8") as arquivo:
@@ -39,14 +40,33 @@ dic_teclado = {
     'y':'none',
     'z':'none',
 }
+t1 = 0
+t2 = 0
+t3 = 0
+t4 = 0
+t5 = 0
+t6 = 0
 #Sorteando Palavra
 palavra_sorteada = choice(lista_palavra_formatada)
+
+
+#Tutorial
+while True:
+    pergunta_tutorial = input('Deseja ler o tutorial do jogo? [S]/[N]. ').lower().strip()
+    if pergunta_tutorial == 's':
+        print('Tente acertar a palavra sorteada em até 6 tentativas. O jogo sempre informará a situação em que o jogador se encontra.\nCaso a palavra escrita pelo jogador possua alguma letra ' + Fore.GREEN + 'dessa cor ' + Fore.WHITE +', significa que a letra está presente na palavra e se encontra na posição correta.\nCaso seja ' + Fore.YELLOW + 'dessa cor ' + Fore.WHITE + ', significa que a letra está presente na palavra, porém não se encontra na posição correta.\nE por fim, caso seja ' + Fore.MAGENTA + 'dessa cor ' + Fore.WHITE + ', significa que a letra não está presente na palavra.')
+    elif pergunta_tutorial == 'n':
+        break
+    else:
+        print(Fore.RED + 'Entrada inválida.' + Fore.WHITE)
+
 
 #Início do jogo
 while True:
     #Verificando se a entrada é valida
     while True:
-        pergunta_palavra = remove_acentos(input('Digite sua chute: ').lower().strip())
+        print('\n')
+        pergunta_palavra = remove_acentos(input('Digite seu chute: ').lower().strip())
         if verfica_palavra(pergunta_palavra) == 'Entrada Inválida':
             print(Fore.RED + 'Digite Novamente, entrada inválida' + Fore.WHITE)
         elif pergunta_palavra not in lista_palavra_formatada:
@@ -58,9 +78,14 @@ while True:
         if tentativas == 1:
             tabela_palavras = tabela_inicial(palavra_sorteada,pergunta_palavra)
             print(tabela_palavras)
+            teclado_dic = teclado(palavra_sorteada,pergunta_palavra,dic_teclado)
+            teclado_pintado = pinta_teclado(teclado_dic)
+            for elem in teclado_pintado:
+                sys.stdout.write(elem + '     ')
         else:
             tabela_palavras = tabela_jogo(tabela_palavras,palavra_sorteada,pergunta_palavra)
-            print(tabela_palavras)   
+            print(tabela_palavras)
+        print('\n')   
         pergunta_ganhador = input(Fore.GREEN + f'Parabéns, você acertou em {tentativas} tentativa(s). Deseja tentar adivinhar outra palavra? [S]/[N]. ' + Fore.WHITE).upper().strip()
         if pergunta_ganhador == 'S':
             tentativas = 0
@@ -71,17 +96,26 @@ while True:
         if tentativas == 1:
             tabela_palavras = tabela_inicial(palavra_sorteada,pergunta_palavra)
             print(tabela_palavras)
+            teclado_dic = teclado(palavra_sorteada,pergunta_palavra,dic_teclado)
+            teclado_pintado = pinta_teclado(teclado_dic)
+            for elem in teclado_pintado:
+                sys.stdout.write(elem + '     ')
         else:
             tabela_palavras = tabela_jogo(tabela_palavras,palavra_sorteada,pergunta_palavra)
             print(tabela_palavras)
+            teclado_dic = teclado(palavra_sorteada,pergunta_palavra,dic_teclado)
+            teclado_pintado = pinta_teclado(teclado_dic)
+            for elem in teclado_pintado:
+                sys.stdout.write(elem + '     ')
     if tentativas == 6:
+        print('\n')
         pergunta_reiniciar = input(Fore.RED + f'Você Perdeu, a palavra era "{palavra_sorteada}". Deseja tentar adivinhar outra palavra? [S]/[N]. ' + Fore.WHITE).upper().strip()
         if pergunta_reiniciar == 'S':
             tentativas = 0
             palavra_sorteada = choice(lista_palavra_formatada)
         else:
             break
-    
-    
+
+ 
 
     
